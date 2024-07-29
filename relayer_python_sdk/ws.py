@@ -11,6 +11,13 @@ import relayer_python_sdk.events as events
 
 
 class RelayerWS:
+    '''
+    This class is used to connect to the websocket and subscribe to the feedIDs.
+
+    Args:
+        feedIDs ``(List[str])``: List of feedIDs to subscribe to.
+        logger ``(logging.Logger | NoneType, optional)``: Logger to use. Defaults to None.
+    '''
     def __init__(
         self, feedIDs: List[str], logger: logging.Logger | NoneType = None
     ) -> None:
@@ -29,15 +36,15 @@ class RelayerWS:
         self.url = config.gen_url(feedIDs)
 
         self.on_price_event_fn: Callable[[events.DataFeed], Awaitable[NoneType]] = (
-            self.default_logger
+            self._default_logger
         )
         self.on_info_event_fn: Callable[
             [events.SubscriptionMsg], Awaitable[NoneType]
-        ] = self.default_logger
+        ] = self._default_logger
 
         self.ws = None
 
-    async def default_logger(self, msg: Any):
+    async def _default_logger(self, msg: Any):
         self.logger.info("Received message: %s", msg)
 
     def on_price_event(
