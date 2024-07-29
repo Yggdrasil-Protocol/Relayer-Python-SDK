@@ -7,6 +7,8 @@
 
 # Example
 
+Here is an example of how to use the Relayer-Go-SDK in Python:
+
 ```python
 import asyncio
 from relayer_python_sdk.ws import RelayerWS
