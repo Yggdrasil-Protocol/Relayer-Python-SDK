@@ -4,7 +4,7 @@ from typing import List, Union
 
 from pydantic import BaseModel
 
-
+# Define the DataFeed and SubscriptionMsg models
 class DataFeed(BaseModel):
     event: str
     p: str
