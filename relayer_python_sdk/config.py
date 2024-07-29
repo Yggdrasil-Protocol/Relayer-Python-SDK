@@ -28,6 +28,19 @@ def gen_url(
     path: str = PATH,
     url: str = URL,
 ) -> str:
+    '''
+    This function generates the websocket connection URL. 
+
+    Args:
+        feedIDs: ``List[str]``: The list of feedIDs to subscribe to.
+        scheme: ``str``: The scheme of the URL.
+        netloc: ``str``: The netloc of the URL.
+        path: ``str``: The path of the URL.
+        url: ``str``: The URL.
+    
+    Returns:
+        ``str``: The generated URL.
+    '''
     return str(
         urlunparse(
             Components(
