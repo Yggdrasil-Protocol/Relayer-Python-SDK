@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 class DataFeed(BaseModel):
     event: str
-    price: str
+    p: str
     feedID: str
     t: int
 
@@ -20,16 +20,23 @@ class SubscriptionMsg(BaseModel):
     success: List[SubscriptionFeed] | NoneType
     error: List[SubscriptionFeed] | NoneType
 
-'''
-This function parses the event_raw string to a DataFeed or SubscriptionMsg object.
-Can raise a JSONDecodeError if the event_raw string is not a valid JSON string.
-Can raise a ValidationError if the event_raw JSON does not match the DataFeed or SubscriptionMsg schema.
-Can raise a ValueError if the event type is unknown.
-'''
 def parse_event(event_raw: str) -> Union[DataFeed, SubscriptionMsg]:
-    event_obj = json.loads(event_raw)    
+    '''
+    This function parses the event_raw string to a DataFeed or SubscriptionMsg object.
+
+    Args:
+        event_raw: str: The raw event string.
+    Returns:
+        Union[DataFeed, SubscriptionMsg]: The parsed DataFeed or SubscriptionMsg object.
+    Raises:
+        JSONDecodeError: if the event's raw string is not a valid JSON string.
+        ValidationError: if the event's JSON does not match their corresponding event schema.
+        ValueError: if the event type is unknown.
+    '''
+    event_obj = json.loads(event_raw)
+    
     match event_obj:
-        case {"event":"data"}:
+        case {"event":"price"}:
             return DataFeed(**event_obj)
         case {"event":"subscribe-status"}:
             return SubscriptionMsg(**event_obj)
