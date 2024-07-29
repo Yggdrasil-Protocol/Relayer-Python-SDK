@@ -40,3 +40,5 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+This code will subscribe to the data feeds `SPOT:BTC_USDT` and `SPOT:ETH_USDT` and print the price events and info events.
