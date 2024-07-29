@@ -4,3 +4,37 @@
 
 [cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
 [cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
+
+# Example
+
+```python
+import asyncio
+from relayer_python_sdk.ws import RelayerWS
+from relayer_python_sdk import events
+
+feedIDs = ["SPOT:BTC_USDT", "SPOT:ETH_USDT"]
+ws = RelayerWS(feedIDs)
+
+
+@ws.on_price_event
+async def on_price_event(event: events.DataFeed):
+    print("Price event:", event)
+
+
+@ws.on_info_event
+async def on_info_event(event: events.SubscriptionMsg):
+    print("Info event:", event)
+
+
+async def main():
+    sub_task = asyncio.create_task(ws.subscribe())
+
+    await asyncio.sleep(10)
+    await ws.close()
+
+    await sub_task
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
