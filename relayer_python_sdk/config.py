@@ -11,20 +11,22 @@ class Components(NamedTuple):
     fragment: str
 
 
-consts = {
-    "SCHEME": "wss",
-    "NETLOC": "feeds.yggdrasilprotocol.io",
-    "PATH": "",
-    "URL": "/v1/ws",
-}
+# constants for the ws conn url
+SCHEME = "wss"
+NETLOC = "feeds.yggdrasilprotocol.io"
+PATH = ""
+URL = "/v1/ws"
 
+# constants in seconds
+PING_INTERVAL = 30
+PING_TIMEOUT = 60
 
 def gen_url(
     feedIDs: List[str],
-    scheme: str = "wss",
-    netloc: str = "feeds.yggdrasilprotocol.io",
-    path: str = "",
-    url: str = "/v1/ws",
+    scheme: str = SCHEME,
+    netloc: str = NETLOC,
+    path: str = PATH,
+    url: str = URL,
 ) -> str:
     return str(
         urlunparse(
@@ -40,4 +42,4 @@ def gen_url(
     )
 
 
-print(gen_url(["SPOT:BTC_USDT", "SPOT:ETH_USDT"]))
+# print(gen_url(["SPOT:BTC_USDT", "SPOT:ETH_USDT"]))
