@@ -18,9 +18,9 @@ feedIDs = ["SPOT:BTC_USDT", "SPOT:ETH_USDT"]
 ws = RelayerWS(feedIDs)
 
 
-@ws.on_price_event
-async def on_price_event(event: events.DataFeed):
-    print("Price event:", event)
+@ws.on_data_event
+async def on_data_event(event: events.DataFeed):
+    print("Data Feed Event:", event)
 
 
 @ws.on_info_event
@@ -29,7 +29,7 @@ async def on_info_event(event: events.SubscriptionMsg):
 
 
 async def main():
-    sub_task = asyncio.create_task(ws.subscribe())
+    sub_task = asyncio.create_task(ws.connect())
 
     await asyncio.sleep(10)
     await ws.close()
