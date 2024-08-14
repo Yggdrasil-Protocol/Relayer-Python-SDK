@@ -11,14 +11,13 @@ import relayer_python_sdk.events as events
 
 
 class RelayerWS:
-    """
+    '''
     This class is used to connect to the websocket and subscribe to the feedIDs.
 
     Args:
         feedIDs ``(List[str])``: List of feedIDs to subscribe to.
         logger ``(logging.Logger | NoneType, optional)``: Logger to use. Defaults to None.
-    """
-
+    '''
     def __init__(
         self, feedIDs: List[str], logger: logging.Logger | NoneType = None
     ) -> None:
