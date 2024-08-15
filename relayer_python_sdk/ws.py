@@ -1,6 +1,7 @@
 import functools
 import json
 import logging
+import sys
 from types import NoneType
 from typing import Any, Awaitable, Callable, List
 
@@ -11,13 +12,14 @@ import relayer_python_sdk.events as events
 
 
 class RelayerWS:
-    '''
+    """
     This class is used to connect to the websocket and subscribe to the feedIDs.
 
     Args:
         feedIDs ``(List[str])``: List of feedIDs to subscribe to.
         logger ``(logging.Logger | NoneType, optional)``: Logger to use. Defaults to None.
-    '''
+    """
+
     def __init__(
         self, feedIDs: List[str], logger: logging.Logger | NoneType = None
     ) -> None:
@@ -99,10 +101,16 @@ class RelayerWS:
                     self.logger.error("Failed to parse event: %s", e)
                     continue
 
-                match event:
-                    case events.DataFeed():
+                if sys.version_info >= (3, 10):
+                    match event:
+                        case events.DataFeed():
+                            await self.on_data_event_fn(event)
+                        case events.SubscriptionMsg():
+                            await self.on_info_event_fn(event)
+                else:
+                    if isinstance(event, events.DataFeed):
                         await self.on_data_event_fn(event)
-                    case events.SubscriptionMsg():
+                    else:
                         await self.on_info_event_fn(event)
 
     async def close(self):
