@@ -1,7 +1,6 @@
 import functools
 import json
 import logging
-import sys
 from types import NoneType
 from typing import Any, Awaitable, Callable, List
 
@@ -101,17 +100,10 @@ class RelayerWS:
                     self.logger.error("Failed to parse event: %s", e)
                     continue
 
-                if sys.version_info >= (3, 10):
-                    match event:
-                        case events.DataFeed():
-                            await self.on_data_event_fn(event)
-                        case events.SubscriptionMsg():
-                            await self.on_info_event_fn(event)
+                if isinstance(event, events.DataFeed):
+                    await self.on_data_event_fn(event)
                 else:
-                    if isinstance(event, events.DataFeed):
-                        await self.on_data_event_fn(event)
-                    else:
-                        await self.on_info_event_fn(event)
+                    await self.on_info_event_fn(event)
 
     async def close(self):
         if self.ws is not None:
