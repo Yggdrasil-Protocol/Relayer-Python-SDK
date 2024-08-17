@@ -1,8 +1,12 @@
 import json
-from types import NoneType
 from typing import List, Union
 
 from pydantic import BaseModel
+
+try:
+    from types import NoneType
+except ImportError:
+    NoneType = type(None)
 
 # Define the DataFeed and SubscriptionMsg models
 class DataFeed(BaseModel):

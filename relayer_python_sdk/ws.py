@@ -1,7 +1,6 @@
 import functools
 import json
 import logging
-from types import NoneType
 from typing import Any, Awaitable, Callable, List
 
 import websockets
@@ -9,6 +8,10 @@ import websockets
 import relayer_python_sdk.config as config
 import relayer_python_sdk.events as events
 
+try:
+    from types import NoneType
+except ImportError:
+    NoneType = type(None)
 
 class RelayerWS:
     """
