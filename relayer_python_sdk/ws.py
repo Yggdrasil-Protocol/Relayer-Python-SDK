@@ -1,6 +1,7 @@
 import functools
 import json
 import logging
+from types import NoneType
 from typing import Any, Awaitable, Callable, List
 
 import websockets
@@ -8,10 +9,6 @@ import websockets
 import relayer_python_sdk.config as config
 import relayer_python_sdk.events as events
 
-try:
-    from types import NoneType
-except ImportError:
-    NoneType = type(None)
 
 class RelayerWS:
     """
@@ -103,10 +100,11 @@ class RelayerWS:
                     self.logger.error("Failed to parse event: %s", e)
                     continue
 
-                if isinstance(event, events.DataFeed):
-                    await self.on_data_event_fn(event)
-                else:
-                    await self.on_info_event_fn(event)
+                match event:
+                    case events.DataFeed():
+                        await self.on_data_event_fn(event)
+                    case events.SubscriptionMsg():
+                        await self.on_info_event_fn(event)
 
     async def close(self):
         if self.ws is not None:

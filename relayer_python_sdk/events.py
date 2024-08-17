@@ -1,12 +1,8 @@
 import json
+from types import NoneType
 from typing import List, Union
 
 from pydantic import BaseModel
-
-try:
-    from types import NoneType
-except ImportError:
-    NoneType = type(None)
 
 
 # Define the DataFeed and SubscriptionMsg models
@@ -43,22 +39,12 @@ def parse_event(event_raw: str) -> Union[DataFeed, SubscriptionMsg]:
     """
     event_obj = json.loads(event_raw)
 
-    if event_obj["event"] == "price":
-        return DataFeed(**event_obj)
-    elif (
-        event_obj["event"] == "subscribe-status"
-        or event_obj["event"] == "subscribe-failed"
-    ):
-        return SubscriptionMsg(**event_obj)
-    else:
-        raise ValueError(f"Unknown event type: {event_obj['event']}")
-
-    # match event_obj:
-    #     case {"event":"price"}:
-    #         return DataFeed(**event_obj)
-    #     case {"event":"subscribe-status"}:
-    #         return SubscriptionMsg(**event_obj)
-    #     case {"event":"subscribe-failed"}:
-    #         return SubscriptionMsg(**event_obj)
-    #     case _:
-    #         raise ValueError(f"Unknown event type: {event_obj['event']}")
+    match event_obj:
+        case {"event":"price"}:
+            return DataFeed(**event_obj)
+        case {"event":"subscribe-status"}:
+            return SubscriptionMsg(**event_obj)
+        case {"event":"subscribe-failed"}:
+            return SubscriptionMsg(**event_obj)
+        case _:
+            raise ValueError(f"Unknown event type: {event_obj['event']}")
