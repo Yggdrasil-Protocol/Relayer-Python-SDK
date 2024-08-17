@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "relayer-python-sdk"
-version = "0.2.4"
+version = "0.2.5"
 description = "Python SDK for interacting with the Relayer WS API"
 authors = ["Suryansh Chauhan"]
 readme = "README.md"
